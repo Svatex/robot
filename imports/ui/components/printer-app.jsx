@@ -1,18 +1,19 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 
 const PrinterApp = () => {
-    const startNumber = 5;
-    const endNumber = 100;
+    const [startNum, setStartNum] = useState(1)
+    const [endNum, setEndNum] = useState(100)
 
-    const numberArray = Array.from({length: endNumber - startNumber}, (_x, i) => i+startNumber)
+    const numberArray = Array.from({length: endNum - startNum}, (_x, i) => i + startNum)
 
     return (
         <PrinterWrapper>
-            {numberArray.map((num)=>{
-                if (num%5 === 0 && num%3 === 0) return  "robotICT "
-                if (num%3 === 0) return  "Robot "
-                if (num%5 === 0) return  "ICT "
+<input/>
+            {numberArray.map((num) => {
+                if (num % 5 === 0 && num % 3 === 0) return "robotICT "
+                if (num % 3 === 0) return "Robot "
+                if (num % 5 === 0) return "ICT "
                 return num + " "
             })}
         </PrinterWrapper>
