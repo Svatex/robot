@@ -16,7 +16,7 @@ export const ArrayPrinter = (array) => {
         if (num % 3 === 0) {
             return (
                 <PrintField fieldColor={colors.lightOrange}>
-                    {printerWords.RobotICT}
+                    {printerWords.Robot}
                 </PrintField>
 
             )
@@ -24,7 +24,7 @@ export const ArrayPrinter = (array) => {
         if (num % 5 === 0) {
             return (
                 <PrintField fieldColor={colors.yellow}>
-                    {printerWords.RobotICT}
+                    {printerWords.ICT}
                 </PrintField>
             )
         }
