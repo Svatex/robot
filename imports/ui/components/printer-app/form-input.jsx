@@ -33,8 +33,9 @@ const CustomLabel = styled.label`
 `
 
 const CustomField = styled(Field)`
+  width: 80%;
   padding: 8px;
   font-size: 20px;
   text-align: center;
-  margin-bottom: 10px;
+  margin: 5px auto ;
 `
