@@ -1,28 +1,19 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
-import {Form, Formik, Field} from 'formik';
-import * as Yup from "yup";
-
-const validationSchema = Yup.object().shape({
-    startNum: Yup
-        .number("Must be a number")
-        .integer("Must be and integer")
-        .min(1, "Must be bigger than 0")
-        .required("Required"),
-    endNum: Yup
-        .number("Must be a number")
-        .integer("Must be and integer")
-        .min(1, "Must be bigger than 1")
-        .required("Required"),
-});
-
+import {Form, Formik} from 'formik';
+import FormInput from "./printer-app/form-input";
+import {colors} from "../../../src/catalogs/colors-catalog";
+import {robotValidation} from "../../../src/utils/validation/robot-printer";
+import {ArrayPrinter} from "../../../src/utils/array-printer";
 
 const PrinterApp = () => {
     const [startNum, setStartNum] = useState(1)
     const [endNum, setEndNum] = useState(100)
 
+    /** create new array with length calculated based on given numbers */
     const numberArray = Array.from({length: endNum - startNum}, (_x, i) => i + startNum)
 
+    /** setNumbers */
     const handleSubmit = (values) => {
         setEndNum(values.endNum + 1)
         setStartNum(values.startNum)
@@ -30,50 +21,37 @@ const PrinterApp = () => {
 
     return (
         <PrinterWrapper>
+            <Heading>ROBOT PRINTER 🤖</Heading>
             <Formik
                 initialValues={{
-                    startNum: 1,
+                   startNum: 1,
                     endNum: 100
                 }}
-                validationSchema={validationSchema}
+                validationSchema={robotValidation}
                 onSubmit={(values) => {
                     handleSubmit(values)
                 }}
             >
                 {({errors, touched}) => (
                     <CustomForm>
-                        <label htmlFor="startNum">Start Number</label>
-                        <Field
-                            id="startNum"
+                        <FormInput
                             name="startNum"
-                            type="number"
-                            placeholder="First number"
+                            errors={errors}
+                            touched={touched}
+                            placeholder="Starting number"
                         />
-                        {errors.startNum && touched.startNum
-                            && <ErrorText>{errors.startNum}</ErrorText>
-                        }
-                        <label htmlFor="endNum">End Number</label>
-                        <Field
-                            id="endNum"
+                        <FormInput
                             name="endNum"
-                            type="number"
+                            errors={errors}
+                            touched={touched}
                             placeholder="Last number"
-
                         />
-                        {errors.endNum && touched.endNum
-                            && <div>{errors.endNum}</div>
-                        }
-                        <button type="submit">Submit</button>
+                        <SubmitButton type="submit">Submit</SubmitButton>
                     </CustomForm>
                 )}
             </Formik>
             <NumbersAndRobots>
-                {numberArray.map((num) => {
-                    if (num % 5 === 0 && num % 3 === 0) return <PrintedField>robotICT</PrintedField>
-                    if (num % 3 === 0) return <PrintedField>Robot</PrintedField>
-                    if (num % 5 === 0) return <PrintedField>ICT</PrintedField>
-                    return <PrintedField>{num}</PrintedField>
-                })}
+                {ArrayPrinter(numberArray)}
             </NumbersAndRobots>
         </PrinterWrapper>
     )
@@ -81,23 +59,24 @@ const PrinterApp = () => {
 }
 export default PrinterApp
 
+const Heading = styled.p`
+    font-size: 36px;
+  margin-top: 20px;
+`
+
 const PrinterWrapper = styled.div`
   max-width: 1280px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-`
-
-const ErrorText = styled.div`
-  font-size: 9px;
-  color: red;
+  margin: 0 auto;
 `
 
 const CustomForm = styled(Form)`
   display: flex;
   flex-direction: column;
-  width: 30%;
+  width: 250px;
   margin: 50px auto 20px auto;
 `
 
@@ -106,12 +85,64 @@ const NumbersAndRobots = styled.div`
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  margin: 0 auto;
+  margin: 25px auto 0 auto;
 `
 
-const PrintedField = styled.p`
-  width: 75px;
+// Button style copied from https://getcssscan.com/css-buttons-examples
+const SubmitButton = styled.button`
+  align-items: center;
+  background-color:  ${colors.turquoise};
+  border: 2px solid ${colors.black};
+  border-radius: 8px;
+  box-sizing: border-box;
+  color:  ${colors.white};
+  cursor: pointer;
+  display: flex;
+  font-family: Inter,sans-serif;
+  font-size: 16px;
+  height: 48px;
+  justify-content: center;
+  line-height: 24px;
+  max-width: 100%;
+  padding: 0 25px;
+  position: relative;
   text-align: center;
-  border: 1px black solid;
-  margin: 5px;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  margin-top:10px;
+  
+  &:after {
+    background-color: ${colors.black};
+    border-radius: 8px;
+    content: "";
+    display: block;
+    height: 48px;
+    left: 0;
+    width: 100%;
+    position: absolute;
+    top: -2px;
+    transform: translate(8px, 8px);
+    transition: transform .2s ease-out;
+    z-index: -1;
+  }
+
+  &:hover:after {
+    transform: translate(0, 0);
+  }
+
+  &:active {
+    background-color: ${colors.darkBlue};
+    outline: 0;
+  }
+
+  &:hover {
+    outline: 0;
+  }
+
+  @media (min-width: 768px) {
+      padding: 0 40px;
+  }
 `
+
