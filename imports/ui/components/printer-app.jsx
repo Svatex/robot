@@ -1,7 +1,9 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
-import {Form, Formik, Field} from 'formik';
+import {Form, Formik} from 'formik';
 import * as Yup from "yup";
+import PrintField from "./printer-app/printer-field";
+import FormInput from "./printer-app/form-input";
 
 const validationSchema = Yup.object().shape({
     startNum: Yup
@@ -42,37 +44,28 @@ const PrinterApp = () => {
             >
                 {({errors, touched}) => (
                     <CustomForm>
-                        <label htmlFor="startNum">Start Number</label>
-                        <Field
-                            id="startNum"
+                        <FormInput
                             name="startNum"
-                            type="number"
-                            placeholder="First number"
+                            errors={errors}
+                            touched={touched}
+                            placeholder="Starting number"
                         />
-                        {errors.startNum && touched.startNum
-                            && <ErrorText>{errors.startNum}</ErrorText>
-                        }
-                        <label htmlFor="endNum">End Number</label>
-                        <Field
-                            id="endNum"
+                        <FormInput
                             name="endNum"
-                            type="number"
+                            errors={errors}
+                            touched={touched}
                             placeholder="Last number"
-
                         />
-                        {errors.endNum && touched.endNum
-                            && <div>{errors.endNum}</div>
-                        }
-                        <button type="submit">Submit</button>
+                        <SubmitButton type="submit">Submit</SubmitButton>
                     </CustomForm>
                 )}
             </Formik>
             <NumbersAndRobots>
                 {numberArray.map((num) => {
-                    if (num % 5 === 0 && num % 3 === 0) return <PrintedField>robotICT</PrintedField>
-                    if (num % 3 === 0) return <PrintedField>Robot</PrintedField>
-                    if (num % 5 === 0) return <PrintedField>ICT</PrintedField>
-                    return <PrintedField>{num}</PrintedField>
+                    if (num % 5 === 0 && num % 3 === 0) return <PrintField fieldColor="#e76f51">robotICT</PrintField>
+                    if (num % 3 === 0) return <PrintField fieldColor="#f4a261">Robot</PrintField>
+                    if (num % 5 === 0) return <PrintField fieldColor="#e9c46a">ICT</PrintField>
+                    return <PrintField>{num}</PrintField>
                 })}
             </NumbersAndRobots>
         </PrinterWrapper>
@@ -87,6 +80,7 @@ const PrinterWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin: 0 auto;
 `
 
 const ErrorText = styled.div`
@@ -97,7 +91,7 @@ const ErrorText = styled.div`
 const CustomForm = styled(Form)`
   display: flex;
   flex-direction: column;
-  width: 30%;
+  width: 250px;
   margin: 50px auto 20px auto;
 `
 
@@ -106,12 +100,63 @@ const NumbersAndRobots = styled.div`
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  margin: 0 auto;
+  margin: 25px auto 0 auto;
 `
 
-const PrintedField = styled.p`
-  width: 75px;
+// Button style copied from https://getcssscan.com/css-buttons-examples
+const SubmitButton = styled.button`
+  align-items: center;
+  background-color: #2a9d8f;
+  border: 2px solid #111;
+  border-radius: 8px;
+  box-sizing: border-box;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  font-family: Inter,sans-serif;
+  font-size: 16px;
+  height: 48px;
+  justify-content: center;
+  line-height: 24px;
+  max-width: 100%;
+  padding: 0 25px;
+  position: relative;
   text-align: center;
-  border: 1px black solid;
-  margin: 5px;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+
+  &:after {
+    background-color: #111;
+    border-radius: 8px;
+    content: "";
+    display: block;
+    height: 48px;
+    left: 0;
+    width: 100%;
+    position: absolute;
+    top: -2px;
+    transform: translate(8px, 8px);
+    transition: transform .2s ease-out;
+    z-index: -1;
+  }
+
+  &:hover:after {
+    transform: translate(0, 0);
+  }
+
+  &:active {
+    background-color: #264653;
+    outline: 0;
+  }
+
+  &:hover {
+    outline: 0;
+  }
+
+  @media (min-width: 768px) {
+      padding: 0 40px;
+  }
 `
+
