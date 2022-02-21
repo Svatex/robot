@@ -8,14 +8,14 @@ export const ArrayPrinter = (array) => {
     return array.map((num) => {
         if (num % 5 === 0 && num % 3 === 0) {
             return (
-                <PrintField fieldColor={colors.orange}>
+                <PrintField key={num} fieldColor={colors.orange}>
                     {printerWords.RobotICT}
                 </PrintField>
             )
         }
         if (num % 3 === 0) {
             return (
-                <PrintField fieldColor={colors.lightOrange}>
+                <PrintField key={num} fieldColor={colors.lightOrange}>
                     {printerWords.Robot}
                 </PrintField>
 
@@ -23,12 +23,12 @@ export const ArrayPrinter = (array) => {
         }
         if (num % 5 === 0) {
             return (
-                <PrintField fieldColor={colors.yellow}>
+                <PrintField key={num} fieldColor={colors.yellow}>
                     {printerWords.ICT}
                 </PrintField>
             )
         }
-        return <PrintField>{num}</PrintField>
+        return <PrintField key={num}>{num}</PrintField>
     })
 
 }
