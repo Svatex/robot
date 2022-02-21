@@ -11,7 +11,7 @@ export const robotValidation = Yup.object().shape({
     startNum: Yup
         .number(validationText.number)
         .integer(validationText.integer)
-        .min(1, validationText.biggerThan1)
+        .min(1, validationText.biggerThan)
         .required(validationText.required),
     endNum: Yup
         .number(validationText.number)
